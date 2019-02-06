@@ -11,7 +11,9 @@ class ResourcesList extends Component {
         value: 'Account enabled',
       },
     ],
-    page_id: 1
+    page_id: 1,
+    isFirstPage: true,
+    isLastPage: false,
   };
 
   handleSearchChange = (searchValue) => {
@@ -22,9 +24,24 @@ class ResourcesList extends Component {
     this.setState({appliedFilters});
   };
 
+  nextPage = () => {
+    console.log('Next');
+    this.setState({page_id: this.state.page_id += 1})
+    this.setState({isFirstPage: false})
+    this.props.handlePageChange(this.state.page_id)
+  };
+
+  prevPage = () => {
+    console.log('Previous');
+    this.setState({page_id: this.state.page_id -= 1});
+    (this.state.page_id == 1) ? this.setState({isFirstPage: true}) : '';
+    this.props.handlePageChange(this.state.page_id);
+  };
+
   renderItem = (item) => {
     const {id, url, title, image, published_at} = item;
-    const media = <img style={{maxHeight: "60px", width: "60px", objectFit: "contain"}} src={image.src} />;
+    const img_src = image ? image.src : `https://via.placeholder.com/150/`
+    const media = <img style={{maxHeight: "60px", width: "60px", objectFit: "contain"}} src={img_src} />;
 
     return (
       <ResourceList.Item id={id} url={url} media={media}>
@@ -38,6 +55,10 @@ class ResourcesList extends Component {
       singular: 'product',
       plural: 'products',
     };
+    const {
+      isFirstPage,
+      isLastPage,
+    } = this.state;
 
     const items = this.props.products;
 
@@ -79,23 +100,14 @@ class ResourcesList extends Component {
           items={items}
           renderItem={this.renderItem}
           filterControl={filterControl}
+
         />
-        <br/>  <br/>
         <Pagination
-          hasPrevious
-          onPrevious={() => {
-            console.log('Previous');
-            this.setState({page_id: this.state.page_id -= 1})
-            this.props.handlePageChange(this.state.page_id)
-          }}
-          hasNext
-          onNext={() => {
-            console.log('Next');
-            this.setState({page_id: this.state.page_id += 1})
-            this.props.handlePageChange(this.state.page_id)
-          }}
+          hasPrevious={!isFirstPage}
+          hasNext={items.length == 10 }
+          onPrevious={this.prevPage}
+          onNext={this.nextPage}
         />
-          <br/>  <br/>
       </Card>
     );
   }

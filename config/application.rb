@@ -34,9 +34,9 @@ module DefaultApp
       end if File.exists?(env_file)
     end
 
-    config.action_dispatch.default_headers = {
-      'X-Frame-Options' => 'ALLOWALL'
-    }
+    # config.action_dispatch.default_headers = {
+    #   'X-Frame-Options' => 'ALLOWALL'
+    # }
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading
