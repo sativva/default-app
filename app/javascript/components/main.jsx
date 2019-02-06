@@ -11,16 +11,16 @@ class Main extends Component {
   }
 
   componentDidMount() {
-    this.fetchProducts()
+    this.fetchProducts(1)
     // this.fetchSchedules()
   }
 
   handlePageChange = (pageNumber) => {
-    this.fetchProducts()
+    this.fetchProducts(pageNumber)
   }
 
-  fetchProducts = () => {
-    fetch('/api/v1/products', {
+  fetchProducts = (page_id) => {
+    fetch(`/api/v1/products?page=${page_id}`, {
       method: 'GET',
       // body: JSON.stringify({active_page: this.state.activePage}), // or 'PUT',
       headers:{

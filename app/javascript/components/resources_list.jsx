@@ -11,6 +11,7 @@ class ResourcesList extends Component {
         value: 'Account enabled',
       },
     ],
+    page_id: 1
   };
 
   handleSearchChange = (searchValue) => {
@@ -23,7 +24,7 @@ class ResourcesList extends Component {
 
   renderItem = (item) => {
     const {id, url, title, image, published_at} = item;
-    const media = <img style={{maxHeight: "60px", width: "60px", "object-fit": "contain"}} src={image.src} />;
+    const media = <img style={{maxHeight: "60px", width: "60px", objectFit: "contain"}} src={image.src} />;
 
     return (
       <ResourceList.Item id={id} url={url} media={media}>
@@ -84,10 +85,14 @@ class ResourcesList extends Component {
           hasPrevious
           onPrevious={() => {
             console.log('Previous');
+            this.setState({page_id: this.state.page_id -= 1})
+            this.props.handlePageChange(this.state.page_id)
           }}
           hasNext
           onNext={() => {
             console.log('Next');
+            this.setState({page_id: this.state.page_id += 1})
+            this.props.handlePageChange(this.state.page_id)
           }}
         />
           <br/>  <br/>

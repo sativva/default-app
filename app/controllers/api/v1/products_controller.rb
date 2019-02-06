@@ -11,7 +11,7 @@ module Api
 
       # GET /todos/:todo_id/items/:item_id/comments
       def index
-        @products = ShopifyAPI::Product.find(:all)[0...10]
+        @products = ShopifyAPI::Product.find(:all, params: {limit: 10, page: params[:page]})
         json_response({products: @products})
       end
 
@@ -49,7 +49,6 @@ module Api
         @shop = Shop.where(shopify_domain: session['shopify_domain']).first
         @shop.connect_to_store
       end
-
 
     end
   end
